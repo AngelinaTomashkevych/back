@@ -1,3 +1,3 @@
-const Router = require('./Router');
+const { TasksRouter } = require('./TasksRouter');
 
-module.exports = Router;
+module.exports = { TasksRouter };
