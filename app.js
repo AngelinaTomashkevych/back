@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const Router = require('./Router');
+
+const { TasksRouter } = require('./Router');
 
 const corsMiddleware = cors();
 
@@ -8,18 +9,14 @@ const app = express();
 
 app.use(corsMiddleware);
 
-app.use((request, response, next) => {
-    next();
-});
-
-app.use('/app', Router);
+app.use('/app', TasksRouter);
 
 app.use((_, response) => {
     response.status(404).json({ message: 'Not found' });
 });
 
-app.use((error, _, response, __) => {
+app.use((error, _, response, _next) => {
     response.status(500).json({ message: error.message });
 });
 
-app.listen(3000);
+module.exports = app;
