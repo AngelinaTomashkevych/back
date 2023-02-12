@@ -1,3 +1,3 @@
-const { TaskModel } = require('./TaskModel');
+const UserModel = require('./UserModel');
 
-module.exports = { TaskModel };
+module.exports = { UserModel };

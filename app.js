@@ -1,15 +1,20 @@
 const express = require('express');
 const cors = require('cors');
+const morgan = require('morgan');
+require('dotenv').config();
 
-const { TasksRouter } = require('./Router');
+const { AuthRouter } = require('./Router');
 
 const corsMiddleware = cors();
 
 const app = express();
+const formatLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
+app.use(morgan(formatLogger));
 app.use(corsMiddleware);
+app.use(express.json());
 
-app.use('/app', TasksRouter);
+app.use('/', AuthRouter);
 
 app.use((_, response) => {
     response.status(404).json({ message: 'Not found' });

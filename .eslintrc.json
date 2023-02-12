@@ -4,8 +4,7 @@
     },
     "env": {
         "es6": true,
-        "node": true,
-        "sourceType": "module"
+        "node": true
     },
     "rules": {
         "semi": ["error", "always"],

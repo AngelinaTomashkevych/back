@@ -1,3 +1,3 @@
-const getTasks = require('./tasks');
+const { login, registration, logout } = require('./auth');
 
-module.exports = { getTasks };
+module.exports = { login, registration, logout };
