@@ -1,3 +1,3 @@
-const { TasksRouter } = require('./TasksRouter');
+const { AuthRouter } = require('./AuthRouter');
 
-module.exports = { TasksRouter };
+module.exports = { AuthRouter };
