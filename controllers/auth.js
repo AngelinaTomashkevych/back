@@ -8,17 +8,17 @@ const login = async (request, response) => {
     const isValidPassword = user && Password.compare(password, user.password);
 
     if (!user || !isValidPassword) {
-        response.status(404).json({ message: 'Wrong email or password' });
+        response.status(404).json({ email: 'Wrong email or password' });
         return;
     }
 
     const { _id: id } = user;
 
-    const data = await UserModel.findByIdAndUpdate(id, {
+    const { token } = await UserModel.findByIdAndUpdate(id, {
         token: Token.set(id),
     });
 
-    response.status(200).json(data);
+    response.status(200).json({ token, id, isAuth: true });
 };
 
 const registration = async (request, response) => {
@@ -27,7 +27,7 @@ const registration = async (request, response) => {
     const user = await UserModel.findOne({ email });
 
     if (user) {
-        response.status(409).json({ message: 'Already account exist' });
+        response.status(409).json({ email: 'Already account exist' });
         return;
     }
 
@@ -37,9 +37,9 @@ const registration = async (request, response) => {
     User.setUserData(Password.set(password));
     User.setToken(Token.set(id));
 
-    const data = await User.save();
+    const { token } = await User.save();
 
-    response.status(201).json(data);
+    response.status(201).json({ token, id, isAuth: true });
 };
 
 const logout = async (request, response) => {
@@ -50,4 +50,24 @@ const logout = async (request, response) => {
     response.status(200).json({});
 };
 
-module.exports = { login, registration, logout };
+const checkAuth = async (request, response) => {
+    const { token } = request.cookies;
+
+    const unAuthData = { id: null, isAuth: false };
+
+    if (!token) {
+        response.status(200).json(unAuthData);
+        return;
+    }
+
+    const { id } = Token.verify(token);
+
+    if (!id) {
+        response.status(200).json(unAuthData);
+        return;
+    }
+
+    response.status(200).json({ id, isAuth: true });
+};
+
+module.exports = { login, registration, logout, checkAuth };
