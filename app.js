@@ -1,17 +1,22 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const { AuthRouter } = require('./Router');
 
-const corsMiddleware = cors();
-
 const app = express();
 const formatLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
+app.use(cookieParser());
 app.use(morgan(formatLogger));
-app.use(corsMiddleware);
+app.use(
+    cors({
+        credentials: true,
+        origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    })
+);
 app.use(express.json());
 
 app.use('/', AuthRouter);
