@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
-const { AuthRouter } = require('./Router');
+const { AuthRouter, TaskmanRouter } = require('./Router');
 
 const app = express();
 const formatLogger = app.get('env') === 'development' ? 'dev' : 'short';
@@ -20,6 +20,7 @@ app.use(
 app.use(express.json());
 
 app.use('/', AuthRouter);
+app.use('/taskman', TaskmanRouter);
 
 app.use((_, response) => {
     response.status(404).json({ message: 'Not found' });

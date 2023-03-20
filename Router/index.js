@@ -1,3 +1,4 @@
 const { AuthRouter } = require('./AuthRouter');
+const { TaskmanRouter } = require('./TaskmanRouter');
 
-module.exports = { AuthRouter };
+module.exports = { AuthRouter, TaskmanRouter };

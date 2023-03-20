@@ -51,19 +51,12 @@ const logout = async (request, response) => {
 };
 
 const checkAuth = async (request, response) => {
-    const { token } = request.cookies;
-
-    const unAuthData = { id: null, isAuth: false };
-
-    if (!token) {
-        response.status(200).json(unAuthData);
-        return;
-    }
+    const { token = '' } = request.cookies;
 
     const { id } = Token.verify(token);
 
     if (!id) {
-        response.status(200).json(unAuthData);
+        response.status(200).json({ id: null, isAuth: false });
         return;
     }
 
